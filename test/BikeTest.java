@@ -10,13 +10,13 @@ public class BikeTest {
     @BeforeEach
     public void createBike(){
          bike = new Bike();
-         bike.isOn = true;
+         bike.powerOn();
 
     }
 
     @AfterEach
     public void turnBikeOff(){
-        bike.isOn = false;
+        bike.powerOff();
     }
     @Test
     public void turnBikeOn_ItIsOn(){
@@ -34,7 +34,9 @@ public class BikeTest {
 
     @Test
     public void accelerate_ItAccelerates(){
-        bike.setSpeed(20);
+        for (int speed = 0; speed < 20; speed++) {
+            bike.accelerate();
+        }
         bike.accelerate();
 
         int speed = bike.getSpeed();
@@ -43,8 +45,6 @@ public class BikeTest {
 
     @Test
     public void testAccelerate_acceleratesInIncrementOneWhenInGearOne(){
-        bike.setSpeed(0);
-
         int speed = bike.getSpeed();
         bike.accelerate();
         assertEquals(speed+1,bike.getSpeed());
@@ -52,41 +52,42 @@ public class BikeTest {
 
     @Test
     public void testAccelerate_acceleratesInIncrementOneWhenInGearOneAndChangesWhenExceeds20(){
-        bike.setSpeed(20);
-        for (int speed = 0; speed < 2; speed++) {
+        for (int speed = 0; speed < 20; speed++) {
             bike.accelerate();
         }
-
+        bike.accelerate();
+        bike.accelerate();
         assertEquals(2,bike.getGearState());
         assertEquals(23,bike.getSpeed());
 
     }
     @Test
     public void testAccelerate_acceleratesInIncrementTwoWhenInGearTwoAndChangesWhenExceeds30(){
-        bike.setSpeed(30);
-        for (int speed = 0; speed < 2; speed++) {
+        for (int speed = 1; speed <= 26; speed++) {
             bike.accelerate();
         }
 
         assertEquals(3,bike.getGearState());
-        assertEquals(35,bike.getSpeed());
+        assertEquals(31,bike.getSpeed());
 
     }
 
     @Test
     public void testAccelerate_acceleratesInIncrementThreeWhenInGearThreeAndChangesWhenExceeds40(){
-        bike.setSpeed(40);
-        for (int speed = 0; speed < 2; speed++) {
+
+        for (int speed = 1; speed <= 30; speed++) {
             bike.accelerate();
         }
 
         assertEquals(4,bike.getGearState());
-        assertEquals(47,bike.getSpeed());
+        assertEquals(43,bike.getSpeed());
     }
 
     @Test
     public void testChangeGear(){
-        bike.setSpeed(20);
+        for (int speed = 1; speed <= 20; speed++) {
+            bike.accelerate();
+        }
         int expected = 1;
 
         assertEquals(expected,bike.changeGear());
@@ -94,7 +95,9 @@ public class BikeTest {
 
     @Test
     public void testAccelerate_acceleratesInIncrementTwoWhenInGearTwo(){
-        bike.setSpeed(21);
+        for (int speed = 1; speed <= 21; speed++) {
+            bike.accelerate();
+        }
         int speed = bike.getSpeed();
         bike.accelerate();
         assertEquals(speed + 2,bike.getSpeed());
@@ -102,7 +105,9 @@ public class BikeTest {
 
     @Test
     public void testAccelerate_acceleratesInIncrementThreeWhenInGearThree(){
-        bike.setSpeed(31);
+        for (int speed = 1; speed <= 26; speed++) {
+            bike.accelerate();
+        }
         int speed = bike.getSpeed();
         bike.accelerate();
         assertEquals(speed+3,bike.getSpeed());
@@ -110,7 +115,9 @@ public class BikeTest {
 
     @Test
     public void testAccelerate_acceleratesInIncrementFourWhenInGearFour(){
-        bike.setSpeed(41);
+        for (int speed = 1; speed <= 30; speed++) {
+            bike.accelerate();
+        }
         int speed = bike.getSpeed();
         bike.accelerate();
         assertEquals(speed + 4,bike.getSpeed());
@@ -122,7 +129,9 @@ public class BikeTest {
     }
     @Test
     public void testDecelerate_DeceleratesInDecrementOfOneWhenInGearOne(){
-        bike.setSpeed(20);
+        for (int speed = 1; speed <= 20; speed++) {
+            bike.accelerate();
+        }
 
         bike.decelerate();
         assertEquals(19,bike.getSpeed());
@@ -131,7 +140,9 @@ public class BikeTest {
     @Test
     public void testDecelerate_DeceleratesInDecrementOfTwoWhenInGearTwo(){
 
-        bike.setSpeed(25);
+        for (int speed = 1; speed <= 23; speed++) {
+            bike.accelerate();
+        }
 
         bike.decelerate();
         assertEquals(23,bike.getSpeed());
@@ -139,7 +150,9 @@ public class BikeTest {
 
     @Test
     public void testDecelerate_DeceleratesInDecrementOfThreeWhenInGearThree(){
-        bike.setSpeed(34);
+        for (int speed = 1; speed <= 27; speed++) {
+            bike.accelerate();
+        }
 
         bike.decelerate();
         assertEquals(31,bike.getSpeed());
@@ -147,38 +160,46 @@ public class BikeTest {
 
     @Test
     public void testDecelerate_DeceleratesInDecrementOfFourWhenInGearFour(){
-        bike.setSpeed(45);
+        for (int speed = 1; speed <= 31; speed++) {
+            bike.accelerate();
+        }
 
         bike.decelerate();
-        assertEquals(41,bike.getSpeed());
+        assertEquals(43,bike.getSpeed());
     }
 
     @Test
     public void testDecelerate_deceleratesInDecrementFourWhenInGearFourAndChangesWhenLowerThan40(){
-        bike.setSpeed(44);
+        for (int speed = 1; speed <= 30; speed++) {
+            bike.accelerate();
+        }
         for (int speed = 0; speed < 1; speed++) {
             bike.decelerate();
         }
 
         assertEquals(3,bike.getGearState());
-        assertEquals(40,bike.getSpeed());
+        assertEquals(39,bike.getSpeed());
     }
 
     @Test
     public void testDecelerate_deceleratesInDecrementThreeWhenInGearThreeAndChangesWhenLowerThan30(){
-        bike.setSpeed(32);
+        for (int speed = 1; speed <= 26; speed++) {
+            bike.accelerate();
+        }
         for (int speed = 0; speed < 1; speed++) {
             bike.decelerate();
         }
 
         assertEquals(2,bike.getGearState());
-        assertEquals(29,bike.getSpeed());
+        assertEquals(28,bike.getSpeed());
     }
 
     @Test
     public void testDecelerate_deceleratesInDecrementTwoWhenInGearTwoAndChangesWhenLowerThan20(){
-        bike.setSpeed(24);
-        for (int speed = 0; speed < 3; speed++) {
+        for (int speed = 1; speed <= 21; speed++) {
+            bike.accelerate();
+        }
+        for (int speed = 0; speed < 1; speed++) {
             bike.decelerate();
         }
 
